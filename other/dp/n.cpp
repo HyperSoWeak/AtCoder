@@ -12,23 +12,22 @@
 #define rr(a,x) memset(a,x,sizeof(a))
 #define hyper ios::sync_with_stdio(0); cin.tie(0)
 using namespace std;
-#define MAXN 105
-#define MAXK 100005
-#define MOD 1000000007
+#define MAXN 405
 
-int n, k, a[MAXN], dp[MAXK], ps[MAXK];
+int n, a[MAXN], dp[MAXN][MAXN], ps[MAXN];
 
 signed main() {
     hyper;
-    cin >> n >> k;
-    rep1(i,1,n) cin >> a[i];
-    rep1(j,0,k) {
-        dp[j] = (j <= a[1]);
-        ps[j+1] = ps[j] + dp[j];
+    cin >> n;
+    rep1(i,1,n) {
+        cin >> a[i];
+        dp[i][i] = 0;
+        ps[i] = ps[i-1] + a[i];
     }
-    rep1(i,2,n) {
-        rep1(j,0,k) dp[j] = (ps[j+1] - ps[max(0,j-a[i])]) % MOD;
-        rep1(j,0,k) ps[j+1] = ps[j] + dp[j];
+    rep1(len,2,n) rep1(i,1,n-len+1) {
+        int j = i + len - 1;
+        dp[i][j] = INF;
+        rep(k,i,j) dp[i][j] = min(dp[i][j], dp[i][k]+dp[k+1][j]+ps[j]-ps[i-1]);
     }
-    cout << dp[k];
+    cout << dp[1][n];
 }
