@@ -15,28 +15,24 @@ using vi = vector<int>;
 using mat = vector<vi>;
 const int IINF = 0x3f3f3f3f;
 const int INF = 0x3f3f3f3f3f3f3f3f;
-const int MOD = 998244353;
+const int MOD = 1e9+7;
 const int MN = 2e5+5;
 
-struct Fenwick {
-    vector<int> v;
-    int sz;
-    Fenwick(int n) {
-        v.resize(n+1, 0);
-        sz = n;
-    }
-    int lowbit(int x) { return x&-x; }
-    void modify(int p, int x) {
-        for(int i=p; i<=sz; i+=lowbit(i)) v[i] += x;
-    }
-    int query(int p) {
-        int sum = 0;
-        for(int i=p; i>0; i-=lowbit(i)) sum += v[i];
-        return sum;
-    }
-};
+bool check(string s, int n) {
+    rep(i,0,n/2) if(s[i] != s[n/2+i]) return 0;
+    return 1;
+}
 
 signed main() {
     hyper;
-    
+    string s;
+    cin >> s;
+    int n = s.size() - 2;
+    while(1) {
+        if(check(s, n)) {
+            cout << n << '\n';
+            return 0;
+        }
+        n -= 2;
+    }
 }

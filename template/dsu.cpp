@@ -18,22 +18,23 @@ const int INF = 0x3f3f3f3f3f3f3f3f;
 const int MOD = 998244353;
 const int MN = 2e5+5;
 
-struct Fenwick {
-    vector<int> v;
-    int sz;
-    Fenwick(int n) {
-        v.resize(n+1, 0);
-        sz = n;
+struct DSU {
+    vector<int> p, sz;
+    DSU(int n) {
+        p.resize(n+1);
+        sz.resize(n+1, 1);
+        iota(p.begin(), p.end(), 0);
     }
-    int lowbit(int x) { return x&-x; }
-    void modify(int p, int x) {
-        for(int i=p; i<=sz; i+=lowbit(i)) v[i] += x;
+    int find(int x) { return x == p[x] ? x : p[x] = find(p[x]); }
+    void unite(int x, int y) {
+        x = find(x), y = find(y);
+        if(x != y) {
+            if(sz[x] < sz[y]) swap(x, y);
+            p[y] = x;
+            sz[x] += sz[y];
+        }
     }
-    int query(int p) {
-        int sum = 0;
-        for(int i=p; i>0; i-=lowbit(i)) sum += v[i];
-        return sum;
-    }
+    bool same(int x, int y) { return find(x) == find(y); }
 };
 
 signed main() {
